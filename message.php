@@ -1,24 +1,9 @@
 <?php
 $access_token = "EAAGoM7ssCLwBAIfKGIGgdyNbaydb1E0w1iuRRq5LrEV76RJXiES99mV8OzqjbBEu1SoM9XCtHaPO4Xy0mw4Odt3pzCDLt5JRBYHRCQf0YIbkcbC8rAVODKqzZBtoxTVym9A3CHU1wRjtbZBVxkbZCXD5WrZAV14GdV2oppjZABgZDZD";
-$verify_token = "homar_bot";
-$hub_verify_token = null;
-
-if(isset($_REQUEST['hub_challenge'])) {
-    $challenge = $_REQUEST['hub_challenge'];
-    $hub_verify_token = $_REQUEST['hub_verify_token'];
-}
-
-
-if ($hub_verify_token === $verify_token) {
-    echo $challenge;
-}
-
 $input = json_decode(file_get_contents('php://input'), true);
 
 $sender = $input['entry'][0]['messaging'][0]['sender']['id'];
 $message = $input['entry'][0]['messaging'][0]['message']['text'];
-
-$message_to_reply = '';
 
 /**
  * Some Basic rules to validate incoming messages
@@ -34,6 +19,7 @@ if(preg_match('[time|current time|now]', strtolower($message))) {
 } else {
     $message_to_reply = 'Huh! what do you mean?';
 }
+print $message_to_reply;
 
 //API Url
 $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$access_token;
@@ -69,3 +55,4 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 if(!empty($input['entry'][0]['messaging'][0]['message'])){
     $result = curl_exec($ch);
 }
+?>
